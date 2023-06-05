@@ -1,21 +1,48 @@
-// 1 დავალება 
+// 2 დავალება 
 
-function asyncFunciontAfterDelay(delay) {
-    return new Promise (resolve => setTimeout(resolve,delay))
+const mySetTimeout = (delay) => new Promise(resolve => setTimeout(resolve, delay));
+
+function makeToys(numToys, makeTime, deliverTime, sellTime) {
+    let madeToys = 0;
+    console.log("სათამაშოები მზადდება");
+    mySetTimeout(makeTime)
+    .then(() => {
+        madeToys = numToys;
+        console.log('მზადაა ${madeToys} სათამაშო');
+        return mySetTimeout(deliverTime);
+    })
+    .then(() => {
+        console.log('მიტანილია ${madeToys} სათამაშო');
+        return mySetTimeout(sellTime);
+    })
+    .then(() => {
+        console.log('გაიყიდა ${madeToys} სათამაშო');
+    })
+    .catch((err) => {
+        console.error('შეცდომა ${err}');
+    });
 }
-async function asyncFunc() {
-    console.log("async function has started")
 
-try {
-    await asyncFunciontAfterDelay(1000)
-    console.log('1 second passed')
+makeToys(10, 3000, 2000, 1000);
 
-    await asyncFunciontAfterDelay(2000)
-    console.log('2 seconds passed')
-} catch(err){
-    console.log.error(err)
+
+// 2 ვარიანტი
+
+const mySetTimeout = (delay) => new Promise (resolve => setTimeout(resolve,delay));
+
+async function makeToys(numToys, makeTime, deliverTime, sellTime) {
+    try {
+    let madeToys = 0;
+    console.log("სათამაშოები მზადდება");
+    await mySetTimeout(makeTime)
+    madeToys = numToys;
+    console.log('მზადაა ${madeToys} სათამაშო');
+    await mySetTimeout(deliverTime);
+    console.log('მიტანილია ${madeToys} სათამაშო');
+    await mySetTimeout(sellTime);
+    console.log('გაიყიდა ${madeToys} სათამაშო');
+    } catch (err) {
+    console.error(err);
+    }
 }
-} 
-asyncFunc()
-
-
+makeToys(10,3000,2000,1000);
